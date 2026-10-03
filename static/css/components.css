@@ -1,5 +1,7 @@
-.panel, .card { border-color: var(--border); border-radius: var(--radius-md); box-shadow: var(--elevation-surface); }
+.panel, .card { border-color: var(--border); border-radius: var(--radius-md); box-shadow: var(--elevation-surface); background: var(--surface); }
 .panel { padding: 20px; }
+.panel h2 { margin-top: 0; font-size: 1.05rem; color: var(--text-primary); }
+.panel + .panel { margin-top: 0; }
 .card { transition: border-color var(--motion-fast), box-shadow var(--motion-fast); }
 .card:hover { border-color: var(--border-strong); box-shadow: var(--elevation-raised); }
 .btn, .primary, .secondary, .button { width: auto; max-width: 100%; border-radius: var(--radius-sm); font-weight: var(--weight-medium); text-decoration: none; }

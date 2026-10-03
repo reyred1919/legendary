@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
 from .appearance import DEFAULT_ACCENT, DEFAULT_NAME, DEFAULT_PRIMARY
 from .forms import AppearanceForm, DepartmentForm, DepartmentLifecycleForm, DepartmentMembershipForm, DemandManagerAssignmentForm, InternalNoteForm, LoginForm, ManagerActionForm, MessageForm, ProgramForm, ProjectForm, ProviderApprovalForm, RequestBaseForm, ServiceFamilyForm, ServiceManagementForm, request_readiness_errors, save_upload
@@ -42,9 +43,22 @@ class PortalLoginView(LoginView):
     def form_valid(self,form):
         LoginThrottle.objects.filter(key=self.throttle_key()).delete(); return super().form_valid(form)
 
+def _localize_password_change_form(form):
+    form.fields["old_password"].label = "رمز عبور فعلی"
+    form.fields["new_password1"].label = "رمز عبور جدید"
+    form.fields["new_password2"].label = "تکرار رمز عبور جدید"
+    form.fields["new_password1"].help_text = mark_safe(
+        "<ul class=\"password-rules\"><li>حداقل ۱۰ کاراکتر</li>"
+        "<li>نباید شبیه اطلاعات شخصی شما باشد</li>"
+        "<li>نباید رمز رایج یا تماماً عددی باشد</li></ul>"
+    )
+    for name in ("old_password", "new_password1", "new_password2"):
+        form.fields[name].widget.attrs.setdefault("autocomplete", "new-password" if name != "old_password" else "current-password")
+
 @login_required
 def password_change(request):
     form=PasswordChangeForm(request.user,request.POST or None)
+    _localize_password_change_form(form)
     if request.method=="POST" and form.is_valid():
         user=form.save(); user.must_change_password=False; user.save(update_fields=["must_change_password"]); update_session_auth_hash(request,user); audit(user,"PASSWORD_CHANGED",user); return redirect("password_change_done")
     return render(request,"registration/password_change.html",{"form":form})

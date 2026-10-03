@@ -12,14 +12,14 @@ DEFAULT_NAME = "مرکز خدمات راهکارهای هوشمند"
 DEFAULT_PRIMARY = "#1764a5"
 DEFAULT_ACCENT = "#0d786c"
 FONT_CHOICES = (
-    ("system", "قلم سامانه"),
+    ("system", "Vazirmatn (پیش‌فرض)"),
     ("tahoma", "Tahoma"),
     ("arial", "Arial"),
 )
 FONT_STACKS = {
-    "system": 'Tahoma, "Segoe UI", Arial, sans-serif',
-    "tahoma": 'Tahoma, Arial, sans-serif',
-    "arial": 'Arial, Tahoma, sans-serif',
+    "system": '"Vazirmatn", Tahoma, "Segoe UI", system-ui, sans-serif',
+    "tahoma": 'Tahoma, "Vazirmatn", Arial, sans-serif',
+    "arial": 'Arial, Tahoma, "Vazirmatn", sans-serif',
 }
 
 

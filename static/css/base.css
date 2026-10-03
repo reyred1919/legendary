@@ -1,5 +1,26 @@
-html { font-size: var(--brand-base-size, 15px); font-family: var(--font-body); color: var(--text-primary); background: var(--background); scrollbar-color: #8198aa var(--background); scrollbar-width: thin; }
-body { font-size: 1rem; line-height: var(--line-body); }
+html {
+  font-size: var(--brand-base-size, 15px);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--background);
+  scrollbar-color: #8198aa var(--background);
+  scrollbar-width: thin;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--line-body);
+  font-family: inherit;
+}
+button, input, select, textarea, .btn, .primary, .secondary {
+  font-family: inherit;
+}
+.sidebar, .topbar, .panel, .card, table, .hero {
+  font-family: inherit;
+}
 h1, h2, h3 { line-height: var(--line-heading); }
 h1 { font-size: var(--font-h1); }
 h2 { font-size: var(--font-h2); }

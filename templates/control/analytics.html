@@ -2,20 +2,30 @@
 {% block title %}{{ title }}{% endblock %}{% block heading %}هوش مدیریتی{% endblock %}
 {% block content %}
 <div class="page-head"><div><small>گزارش‌های مدیریتی</small><h1>{{ title }}</h1><p>مبنای تقاضا تاریخ ثبت نهایی است. همه اعداد در محدوده دسترسی و فیلترهای انتخاب‌شده محاسبه شده‌اند.</p></div><div class="actions"><a class="btn btn-sm secondary" href="{% url 'analytics_requests' %}?{{ filter_query }}">فهرست درخواست‌ها</a><a class="btn btn-sm secondary" href="{% url 'analytics_excel' %}?{{ filter_query }}">خروجی اکسل</a></div></div>
-<form class="panel report-filters" method="get" aria-label="فیلترهای گزارش"><div class="report-filter-grid">
+<form class="panel report-filters filter-bar filter-bar--report" method="get" aria-label="فیلترهای گزارش">
+<div class="report-filter-grid report-filter-grid--primary">
 <label>بازه زمانی<select name="period">{% for value,label in period_options %}<option value="{{ value }}" {% if window.preset == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
-<label>از تاریخ<input type="date" name="start" value="{{ selected.start|default:'' }}"></label><label>تا تاریخ<input type="date" name="end" value="{{ selected.end|default:'' }}"></label>
+<label>از تاریخ<input type="date" name="start" value="{{ selected.start|default:'' }}"></label>
+<label>تا تاریخ<input type="date" name="end" value="{{ selected.end|default:'' }}"></label>
 <label>اداره<select name="department"><option value="">همه اداره‌های مجاز</option>{% for row in departments %}<option value="{{ row.code }}" {% if selected.department == row.code %}selected{% endif %}>{{ row.name }}</option>{% endfor %}</select></label>
+<label>وضعیت<select name="status"><option value="">همه وضعیت‌ها</option>{% for value,label in statuses %}<option value="{{ value }}" {% if selected.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+<div class="filter-actions report-filter-actions"><button class="btn btn-md primary" type="submit">اعمال فیلترها</button><a class="btn btn-md btn-tertiary" href="{% url 'analytics_dashboard' %}">پاک‌کردن</a></div>
+</div>
+<details class="filter-bar-advanced report-filter-advanced"{% if selected.program or selected.project or selected.family or selected.service or selected.priority or selected.requester or selected.unit or selected.owner %} open{% endif %}>
+<summary>فیلترهای پیشرفته</summary>
+<div class="report-filter-grid report-filter-grid--advanced">
 <label>طرح<select name="program"><option value="">همه طرح‌های مجاز</option>{% for row in programs %}<option value="{{ row.pk }}" {% if selected.program == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.name }}</option>{% endfor %}</select></label>
 <label>پروژه<select name="project"><option value="">همه پروژه‌ها</option>{% for row in projects %}<option value="{{ row.pk }}" data-program="{{ row.program_id }}" {% if selected.project == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.name }}</option>{% endfor %}</select></label>
 <label>خانواده<select name="family"><option value="">همه خانواده‌ها</option>{% for row in families %}<option value="{{ row.pk }}" data-department="{{ row.department.code }}" {% if selected.family == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.name }}</option>{% endfor %}</select></label>
 <label>خدمت<select name="service"><option value="">همه خدمات</option>{% for row in services %}<option value="{{ row.pk }}" data-family="{{ row.category_id }}" data-department="{{ row.category.department.code }}" {% if selected.service == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.name }}</option>{% endfor %}</select></label>
-<label>وضعیت<select name="status"><option value="">همه وضعیت‌ها</option>{% for value,label in statuses %}<option value="{{ value }}" {% if selected.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
 <label>اولویت<select name="priority"><option value="">همه اولویت‌ها</option>{% for value,label in priorities %}<option value="{{ value }}" {% if selected.priority == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
 <label>درخواست‌کننده<select name="requester"><option value="">همه</option>{% for row in requesters %}<option value="{{ row.pk }}" {% if selected.requester == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.full_name|default:row.username }}</option>{% endfor %}</select></label>
 <label>واحد<select name="unit"><option value="">همه</option>{% for value in units %}<option value="{{ value }}" {% if selected.unit == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label>
 <label>مدیر درخواست<select name="owner"><option value="">همه</option>{% for row in owners %}<option value="{{ row.pk }}" {% if selected.owner == row.pk|stringformat:'s' %}selected{% endif %}>{{ row.full_name|default:row.username }}</option>{% endfor %}</select></label>
-</div><p class="hint">بازه دلخواه با تاریخ استاندارد وارد می‌شود؛ تاریخ‌های گزارش به صورت شمسی نمایش داده می‌شوند.</p><button class="btn btn-md primary" type="submit">اعمال فیلترها</button></form>
+</div>
+</details>
+<p class="hint">بازه دلخواه با تاریخ استاندارد وارد می‌شود؛ تاریخ‌های گزارش به صورت شمسی نمایش داده می‌شوند.</p>
+</form>
 <p class="hint">بازه گزارش: {{ window.start|jdate }} تا {{ window.end|jdate }}. مقایسه با بازه هم‌اندازه پیشین است؛ درصد بدون مخرج معتبر «نامشخص» است.</p>
 <section class="report-kpis" aria-label="شاخص‌های کلیدی">
 <a href="{{ request_urls.total }}"><b>{{ kpis.total }}</b><span>کل درخواست‌های بازه</span><small>تغییر نسبت به قبل: {{ comparisons.total|default_if_none:'نامشخص' }}</small></a>

@@ -1,5 +1,7 @@
-.table-wrap { overflow-x: auto; scrollbar-gutter: stable; }
-table { font-size: .87rem; }
+.table-wrap { overflow-x: auto; scrollbar-gutter: stable; border-radius: var(--radius-md); }
+.table-wrap:has(.empty-state) { overflow-x: visible; }
+.table-wrap:has(.empty-state) table { min-width: 0; width: 100%; }
+table { font-size: .87rem; min-width: 720px; }
 th { position: sticky; top: 0; z-index: 1; background: var(--surface-subtle); color: var(--text-secondary); white-space: nowrap; }
 th, td { padding: 10px 12px; }
 tbody tr:hover { background: var(--surface-subtle); }

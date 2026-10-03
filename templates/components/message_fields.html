@@ -1,2 +1,10 @@
-<p><label for="{{ message_form.body.id_for_label }}">پیام</label>{{ message_form.body }}{{ message_form.body.errors }}</p>
-<div><label for="{{ message_form.file.id_for_label }}">پیوست اختیاری</label><div class="upload-zone">{{ message_form.file }}<div class="file-preview" role="status">فایلی انتخاب نشده است.</div><input type="button" value="حذف انتخاب" class="btn btn-sm btn-tertiary" data-clear-file></div>{{ message_form.file.errors }}</div>
+<div class="field field-wide">
+  <label for="{{ message_form.body.id_for_label }}">پیام</label>
+  {{ message_form.body }}
+  {{ message_form.body.errors }}
+</div>
+<div class="field field-file">
+  <label for="{{ message_form.file.id_for_label }}">پیوست اختیاری</label>
+  <div class="upload-zone">{{ message_form.file }}<div class="file-preview" role="status">فایلی انتخاب نشده است.</div><button type="button" class="btn btn-sm btn-tertiary" data-clear-file>حذف انتخاب</button></div>
+  {{ message_form.file.errors }}
+</div>

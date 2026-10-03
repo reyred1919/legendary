@@ -109,7 +109,7 @@ class EnterpriseDesignSystemTests(TestCase):
 
     def test_png_logo_validation_and_public_delivery(self):
         self.client.force_login(self.admin)
-        with tempfile.TemporaryDirectory() as media_root, override_settings(MEDIA_ROOT=media_root):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as media_root, override_settings(MEDIA_ROOT=media_root):
             bad = SimpleUploadedFile("brand.svg", b"<svg onload='alert(1)'></svg>", content_type="image/svg+xml")
             response = self.client.post(reverse("appearance_settings"), {**self.appearance_data(), "logo": bad})
             self.assertEqual(response.status_code, 200)
@@ -126,6 +126,10 @@ class EnterpriseDesignSystemTests(TestCase):
             changed = self.client.post(reverse("appearance_settings"), self.appearance_data(app_name="نام جدید"))
             self.assertEqual(changed.status_code, 302)
             self.assertTrue(AppearanceSetting.objects.get(pk=1).logo)
+            for appearance in AppearanceSetting.objects.all():
+                if appearance.logo:
+                    appearance.logo.close()
+                appearance.delete()
 
     def test_role_navigation_and_breadcrumb(self):
         self.client.force_login(self.requester)

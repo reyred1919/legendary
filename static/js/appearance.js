@@ -1,7 +1,7 @@
 const families = {
-  system: 'Tahoma, "Segoe UI", Arial, sans-serif',
-  tahoma: 'Tahoma, Arial, sans-serif',
-  arial: 'Arial, Tahoma, sans-serif',
+  system: '"Vazirmatn", Tahoma, "Segoe UI", system-ui, sans-serif',
+  tahoma: 'Tahoma, "Vazirmatn", Arial, sans-serif',
+  arial: 'Arial, Tahoma, "Vazirmatn", sans-serif',
 };
 export function initAppearance() {
   const form = document.querySelector('[data-appearance-form]');

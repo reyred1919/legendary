@@ -413,6 +413,9 @@ class ProviderApprovalForm(forms.Form):
     recommendation=forms.CharField(label='پیشنهاد',required=False,widget=forms.Textarea(attrs={'rows':2}))
     risks=forms.CharField(label='ریسک‌ها',required=False,widget=forms.Textarea(attrs={'rows':2}))
     file=forms.FileField(label='پیوست خصوصی تأیید',required=False)
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields["file"].widget.attrs.update({"data-file-preview":"true","data-max-size":str(settings.MAX_UPLOAD_SIZE),"accept":",".join("."+extension for extension in sorted(settings.ALLOWED_UPLOAD_EXTENSIONS))})
     def clean_file(self):
         file=self.cleaned_data.get('file')
         if file and (file.size>settings.MAX_UPLOAD_SIZE or Path(file.name).suffix.lower().lstrip('.') not in settings.ALLOWED_UPLOAD_EXTENSIONS):

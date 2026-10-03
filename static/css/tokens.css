@@ -6,7 +6,7 @@
   --secondary: #253e5a;
   --surface: #fff;
   --surface-subtle: #f8fafc;
-  --background: #f3f6f9;
+  --background: #eef2f7;
   --border: #dbe4ec;
   --border-strong: #aebfcf;
   --text-primary: #19324d;
@@ -16,7 +16,7 @@
   --warning: #87540c;
   --danger: #a83a39;
   --info: #1764a5;
-  --font-body: var(--brand-font, Tahoma, "Segoe UI", Arial, sans-serif);
+  --font-body: var(--brand-font, "Vazirmatn", Tahoma, "Segoe UI", system-ui, sans-serif);
   --font-caption: .75rem;
   --font-small: .85rem;
   --font-body-size: 1rem;

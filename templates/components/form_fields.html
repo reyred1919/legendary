@@ -1,0 +1,10 @@
+{% for field in form %}
+<div class="field{% if field.field.widget.input_type == 'textarea' %} field-wide{% endif %}{% if field.field.widget.input_type == 'file' %} field-file{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}</label>
+  {% if field.field.widget.input_type == 'file' %}
+  <div class="upload-zone">{{ field }}<div class="file-preview" role="status">فایلی انتخاب نشده است.</div><button type="button" class="btn btn-sm btn-tertiary" data-clear-file>حذف انتخاب</button></div>
+  {% else %}{{ field }}{% endif %}
+  {% if field.help_text %}<small class="helptext">{{ field.help_text|safe }}</small>{% endif %}
+  {{ field.errors }}
+</div>
+{% endfor %}

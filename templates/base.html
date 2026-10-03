@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{% block title %}{{ appearance.app_name }}{% endblock %}</title>
   {% if appearance.logo %}<link rel="icon" type="image/png" href="{% url 'brand_logo' %}">{% endif %}
-  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <link rel="stylesheet" href="{% static 'app.css' %}?v=ui27">
 </head>
 <body>
 {% if user.is_authenticated %}
@@ -38,7 +38,7 @@
   <main id="main-content">
     <header class="topbar">
       <div class="topbar-context"><b>{% block heading %}سامانه خدمات{% endblock %}</b></div>
-      <div class="topbar-user"><a href="{% url 'notifications' %}" {% if request.resolver_match.url_name == 'notifications' %}aria-current="page"{% endif %}>اعلان‌ها{% if unread_notifications %} <span class="count">{{ unread_notifications }}</span>{% endif %}</a><span class="user-avatar" aria-hidden="true">{{ user.full_name|default:user.username|slice:':1' }}</span><a class="user-identity" href="{% url 'profile' %}"><b>{{ user.full_name|default:user.username }}</b><small>{{ user_context_label }}</small></a><form method="post" action="{% url 'logout' %}" class="topbar-logout" novalidate>{% csrf_token %}<button type="submit" class="btn btn-sm btn-tertiary">خروج</button></form></div>
+      <div class="topbar-user"><a href="{% url 'notifications' %}" {% if request.resolver_match.url_name == 'notifications' %}aria-current="page"{% endif %}>اعلان‌ها{% if unread_notifications %} <span class="count">{{ unread_notifications }}</span>{% endif %}</a><span class="user-avatar" aria-hidden="true">{{ user.full_name|default:user.username|slice:':1' }}</span><a class="user-identity" href="{% url 'profile' %}"><b>{{ user.full_name|default:user.username }}</b><small>{{ user_context_label }}</small></a></div>
     </header>
     <div class="content">
       {% if messages %}<div class="flash-area" aria-live="polite">{% for message in messages %}<div class="flash {{ message.tags }}" role="status"><input class="flash-dismiss" type="button" value="×" aria-label="بستن پیام" data-dismiss>{{ message }}</div>{% endfor %}</div>{% endif %}

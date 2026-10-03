@@ -1,6 +1,17 @@
 {% extends 'base.html' %}{% load portal_tags %}{% block heading %}خانه{% endblock %}{% block content %}
-<section class="hero"><div><h1>خدمات را پیدا کنید، درخواست‌ها را پیگیری کنید</h1><p>از انتخاب خدمت تا ثبت بریف و پیگیری پاسخ، مسیر درخواست اینجاست.</p></div><form action="{% url 'service_hub' %}" role="search" novalidate><label class="sr-only" for="home-search">جست‌وجوی خدمات</label><input id="home-search" name="q" placeholder="جست‌وجوی اداره یا خدمت"><button class="btn btn-md primary">جست‌وجو</button></form></section>
+<section class="hero hero-home">
+  <div class="hero-copy">
+    <p class="hero-eyebrow">پرتال درخواست خدمات</p>
+    <h1>خدمات را پیدا کنید، درخواست‌ها را پیگیری کنید</h1>
+    <p>از انتخاب خدمت تا ثبت بریف و پیگیری پاسخ، همه‌چیز در یک مسیر شفاف و قابل پیگیری است.</p>
+  </div>
+  <form class="hero-search" action="{% url 'service_hub' %}" role="search" novalidate>
+    <label class="sr-only" for="home-search">جست‌وجوی خدمات</label>
+    <input id="home-search" name="q" placeholder="نام اداره، خانواده یا خدمت…">
+    <button class="btn btn-md primary" type="submit">جست‌وجو</button>
+  </form>
+</section>
 {% if action_required %}<section><div class="section-title"><h2>نیازمند اقدام شما</h2></div><div class="panel list">{% for item in action_required %}<a href="{% url 'request_detail' item.pk %}"><b>{{ item.public_id }} · {{ item.title }}</b><span>اطلاعات یا مدرک تکمیلی مورد نیاز است.</span><em class="status" data-status="NEED_INFO">اقدام لازم</em></a>{% endfor %}</div></section>{% endif %}
-<section><div class="section-title"><h2>خانواده‌های خدمت</h2><a href="{% url 'service_hub' %}">مرکز خدمات</a></div><div class="cards">{% for family in categories %}<a class="card" href="{% url 'department_landing' family.department.code %}"><small>{{ family.department }} · {{ family.service_count }} خدمت</small><h3>{{ family.name }}</h3>{% if family.description %}<p>{{ family.description }}</p>{% endif %}</a>{% empty %}<div class="panel empty-state"><h3>خدمت منتشرشده‌ای وجود ندارد</h3></div>{% endfor %}</div></section>
+<section><div class="section-title"><h2>خانواده‌های خدمت</h2><a href="{% url 'service_hub' %}">مرکز خدمات</a></div><div class="cards">{% for family in categories %}<a class="card card-family" href="{% url 'department_landing' family.department.code %}"><small class="card-kicker">{{ family.department }} · {{ family.service_count }} خدمت</small><h3>{{ family.name }}</h3>{% if family.description %}<p>{{ family.description }}</p>{% else %}<p>مشاهده و ثبت درخواست از این خانواده</p>{% endif %}<span class="card-cta">ورود به خدمات</span></a>{% empty %}<div class="panel empty-state"><h3>خدمت منتشرشده‌ای وجود ندارد</h3></div>{% endfor %}</div></section>
 <section><div class="section-title"><h2>آخرین درخواست‌ها</h2><a href="{% url 'my_requests' %}">همه درخواست‌ها</a></div><div class="panel table-wrap"><table><thead><tr><th>شناسه</th><th>خدمت</th><th>وضعیت</th><th>آخرین تغییر</th></tr></thead><tbody>{% for item in recent %}<tr><td><a href="{% url 'request_detail' item.pk %}">{{ item.public_id }}</a></td><td>{{ item.service.name }}</td><td><span class="status" data-status="{{ item.status }}">{{ item.get_status_display }}</span></td><td>{{ item.updated_at|jdate }}</td></tr>{% empty %}<tr><td colspan="4"><div class="empty-state"><h3>هنوز درخواستی ثبت نکرده‌اید</h3><a href="{% url 'service_hub' %}" class="btn btn-sm secondary">مرکز خدمات</a></div></td></tr>{% endfor %}</tbody></table></div></section>
 {% endblock %}
