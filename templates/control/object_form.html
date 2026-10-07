@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% block title %}{{ title }}{% endblock %}{% block heading %}{{ title }}{% endblock %}{% block content %}
 {% include 'components/breadcrumbs.html' %}
 <div class="page-head"><div><h1>{{ title }}</h1>{% if department %}<p>{{ department }}</p>{% endif %}</div></div>
-<form method="post" enctype="multipart/form-data" class="panel stack narrow form-grid" novalidate data-submit-guard>{% csrf_token %}{{ form.non_field_errors }}{% include 'components/form_fields.html' with form=form %}<div class="form-actions"><a class="btn btn-md btn-tertiary" href="{% if back_url %}{{ back_url }}{% elif department %}{% url 'manage_department_detail' department.pk %}{% else %}{% url 'manage_departments' %}{% endif %}">انصراف</a><button class="btn btn-md primary">ذخیره</button></div></form>
+<form method="post" enctype="multipart/form-data" class="panel stack narrow form-grid" novalidate data-submit-guard>{% csrf_token %}{{ form.non_field_errors }}{% include 'components/form_fields.html' with form=form %}<div class="form-actions"><button type="submit" class="btn btn-md primary">ذخیره</button><a class="btn btn-md btn-tertiary" href="{% if back_url %}{{ back_url }}{% elif department %}{% url 'manage_department_detail' department.pk %}{% else %}{% url 'manage_departments' %}{% endif %}">انصراف</a></div></form>
 {% endblock %}

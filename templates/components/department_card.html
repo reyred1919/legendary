@@ -1,0 +1,13 @@
+<article class="card department-card">
+  <a class="department-card__link" href="{% url 'department_landing' department.code %}" aria-label="مشاهده خدمات {{ department.name }}">
+    <header class="department-card__head">
+      <span class="department-mark" aria-hidden="true">{{ department.short_name|default:department.name|slice:':1' }}</span>
+      <div class="department-card__titles">
+        <h2 class="department-card__name">{{ department.name }}</h2>
+        <p class="department-card__stats">{{ department.family_count }} خانواده · {{ department.service_count }} خدمت</p>
+      </div>
+    </header>
+    <p class="department-card__desc">{{ department.description|default:'خدمات این اداره را مشاهده کنید.' }}</p>
+    <span class="department-card__action btn btn-sm secondary">ورود به کاتالوگ</span>
+  </a>
+</article>

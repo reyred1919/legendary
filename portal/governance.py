@@ -144,10 +144,13 @@ def submit_governed_request(req_id,actor,*,confirm_last=False):
     if not policy and req.priority not in {Request.Priority.LOW,Request.Priority.URGENT}:
         raise GovernanceError('سیاست اولویت فعال نیست.')
     policies=[]
-    if policy and policy.requires_approval and req.requester_role_context==RoleAssignment.Role.PROJECT_MANAGER:
-        policies=list(ApprovalPolicy.objects.filter(trigger=ApprovalPolicy.Trigger.PRIORITY,priority=policy,
-            requester_role=RoleAssignment.Role.PROJECT_MANAGER,is_active=True).order_by('sequence','pk'))
-        if not policies:raise GovernanceError('زنجیرهٔ تأیید برای این اولویت تنظیم نشده است.')
+    if req.requester_role_context==RoleAssignment.Role.PROJECT_MANAGER:
+        if not req.program_id:raise GovernanceError('ثبت درخواست مدیر پروژه بدون طرح مجاز نیست.')
+        gate_policy=policy or PriorityPolicy.objects.filter(code=req.priority,is_active=True).first()
+        if gate_policy:
+            policies=list(ApprovalPolicy.objects.filter(trigger=ApprovalPolicy.Trigger.PRIORITY,priority=gate_policy,
+                requester_role=RoleAssignment.Role.PROJECT_MANAGER,is_active=True).order_by('sequence','pk'))
+        if not policies:raise GovernanceError('تأیید مدیر طرح برای درخواست مدیر پروژه تنظیم نشده است.')
         if not RoleAssignment.objects.filter(role=RoleAssignment.Role.PROGRAM_MANAGER,scope_type=RoleAssignment.ScopeType.PROGRAM,program_id=req.program_id,is_active=True,user__is_active=True).exclude(user=actor).exists():
             raise GovernanceError('مدیر طرح فعال و مستقلی برای تأیید وجود ندارد.')
     if policy and policy.requires_credit:
