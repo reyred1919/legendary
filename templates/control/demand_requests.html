@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% load portal_tags %}{% block title %}درخواست‌های طرح من{% endblock %}{% block heading %}درخواست‌های سازمانی{% endblock %}{% block content %}
-{% include 'components/breadcrumbs.html' %}<div class="page-head"><div><h1>{% if is_project_manager and not is_program_manager %}درخواست‌های پروژهٔ من{% else %}درخواست‌های طرح من{% endif %}</h1><p>فقط درخواست‌های محدودهٔ طرح‌ها و پروژه‌های مجاز شما نمایش داده می‌شود. این فضا برای مشاهده است و مجوز رسیدگی اداره‌ای نمی‌دهد.</p></div>{% if is_program_manager %}<a class="btn btn-md primary" href="{% url 'program_dashboard' %}">داشبورد طرح</a>{% endif %}</div>
+{% include 'components/breadcrumbs.html' %}<div class="page-head"><div><h1>{% if is_project_manager and not is_program_manager %}درخواست‌های پروژهٔ من{% else %}درخواست‌های طرح من{% endif %}</h1></div>{% if is_program_manager %}<a class="btn btn-md primary" href="{% url 'program_dashboard' %}">داشبورد طرح</a>{% endif %}</div>
 <form method="get" class="filters filter-bar" role="search" novalidate>
   <div class="filter-bar-primary filter-bar-primary--demand">
     <label class="sr-only" for="demand-search">جست‌وجو</label><input id="demand-search" name="q" value="{{ request.GET.q }}" placeholder="شناسه، عنوان یا خدمت">

@@ -28,16 +28,20 @@ if (source) {
   const chartValues = (key) => Array.isArray(data[key]) ? data[key] : [];
   const chartText = {
     trend: 'درخواست‌های جدید و تکمیل‌شده در بازهٔ انتخابی',
+    flow: 'تعداد درخواست‌ها در مراحل ثبت، بررسی، تأیید، اجرا و تکمیل',
     sla: 'درصد پایبندی و تعداد نمونه‌های قابل سنجش',
     department: 'تقسیم صف باز به‌موقع و متأخر، در کنار تکمیل‌شده‌ها',
+    program: 'تقاضای ثبت‌شده به تفکیک طرح',
+    project: 'تقاضای ثبت‌شده به تفکیک پروژه',
     owner: 'تقسیم صف باز مسئولان، با تفکیک درخواست‌های متأخر',
     service: 'ده خدمت پرتکرار در فیلترهای فعلی',
+    family: 'خانواده‌های خدمت با بیشترین تقاضا',
     aging: 'تعداد درخواست‌های باز در هر بازهٔ سنی',
     matrix: 'تعداد درخواست‌ها در هر ترکیب دارای داده از طرح و اداره',
     priority: 'تعداد درخواست‌ها به تفکیک اولویت',
     credit: 'بهره‌برداری از تخصیص؛ جزئیات عددی در راهنما و جدول پایین صفحه',
     approval: 'تعداد تصمیم‌ها به تفکیک وضعیت',
-    status: 'تعداد درخواست‌ها بر اساس وضعیت فعلی، نه مسیر تاریخی گردش کار',
+    status: 'تعداد درخواست‌ها بر اساس وضعیت فعلی',
     resolution: 'تعداد درخواست‌های تکمیل‌شده در هر بازهٔ زمان حل',
   };
 
@@ -167,7 +171,9 @@ if (source) {
       const colors = [palette.success, '#6e9b72', palette.warning, '#bd7139', palette.danger];
       return rows.length ? { ...horizontalOptions(rows, { sort: false, color: palette.primary, series: (items) => [{ name: 'درخواست باز', type: 'bar', data: items.map((row, i) => ({ value: row.total, itemStyle: { color: colors[i] } })), barMaxWidth: 24, itemStyle: { borderRadius: [4, 0, 0, 4] } }] }), kind: key } : null;
     }
-    if (key === 'service' || key === 'resolution' || key === 'priority' || key === 'status' || key === 'approval') return rows.length ? { ...horizontalOptions(rows, { sort: key !== 'resolution' }), kind: key } : null;
+    if (key === 'flow' || key === 'service' || key === 'program' || key === 'project' || key === 'family' || key === 'resolution' || key === 'priority' || key === 'status' || key === 'approval') {
+      return rows.length ? { ...horizontalOptions(rows, { sort: key !== 'resolution' && key !== 'flow' }), kind: key } : null;
+    }
     return null;
   }
 

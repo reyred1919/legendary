@@ -85,6 +85,7 @@ class RequestBaseForm(forms.ModelForm):
             role_labels={RoleAssignment.Role.PROGRAM_MANAGER:"مدیر طرح",RoleAssignment.Role.PROJECT_MANAGER:"مدیر پروژه"}
             role_field=self.fields["requester_role_context"]
             role_field.label="نقش درخواست‌دهنده در این درخواست"
+            role_field.help_text="مدیر پروژه نقش سازمانی زیر مدیر طرح است و با دفتر مدیریت پروژه (PMO) متفاوت است؛ پس از ثبت، درخواست یک‌بار از تأیید مدیر طرح عبور می‌کند."
             role_field.choices=[(role,role_labels[role]) for role in self.context_roles]
             role_field.initial=self.instance.requester_role_context or (self.context_roles[0] if len(self.context_roles)==1 else None)
             if len(self.context_roles)==1:role_field.widget=forms.HiddenInput()
@@ -389,9 +390,19 @@ class CreditAllocationForm(forms.ModelForm):
     class Meta:
         model=CreditAllocation
         fields=['program','department','priority','period','quantity','is_active']
+        labels={
+            'program':'طرح',
+            'department':'اداره',
+            'priority':'اولویت',
+            'period':'دوره',
+            'quantity':'مقدار تخصیص',
+            'is_active':'فعال',
+        }
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['priority'].queryset=PriorityPolicy.objects.filter(requires_credit=True)
+        self.fields['quantity'].widget.attrs.update({'min': 0, 'inputmode': 'numeric'})
+        self.fields['is_active'].help_text='تخصیص غیرفعال در رزرو اعتبار جدید استفاده نمی‌شود.'
 
 class ApprovalPolicyForm(forms.ModelForm):
     class Meta:

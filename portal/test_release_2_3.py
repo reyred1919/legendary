@@ -168,6 +168,9 @@ class PriorityApprovalTests(TestCase):
     def test_provider_self_approval_and_cross_department_denied(self):
         req=self.draft(requester=self.pjm,role='PROJECT_MANAGER',priority='NORMAL')
         submit_governed_request(req.pk,self.pjm)
+        pm_case=req.approval_cases.get()
+        decide_step(pm_case.steps.get().pk,self.pm,'APPROVED')
+        req.refresh_from_db()
         case=request_provider_approval(req.pk,self.provider,target='PROGRAM_MANAGER',details={'reason':'Check'})
         RoleAssignment.objects.create(user=self.provider,role=RoleAssignment.Role.PROGRAM_MANAGER,scope_type=RoleAssignment.ScopeType.PROGRAM,program=self.program)
         with self.assertRaises(GovernanceError):decide_step(case.steps.get().pk,self.provider,'APPROVED')

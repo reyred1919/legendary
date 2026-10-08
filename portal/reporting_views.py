@@ -86,7 +86,8 @@ def context_for(request,forced=None):
     chart=dict(trend=timeline,department=groups["department"],status=groups["status"],sla=[row for row in (
         {"name":"پاسخ اولیه","total":current["first_sla"],"samples":current["first_sla_count"]},
         {"name":"تکمیل","total":current["completion_sla"],"samples":current["completion_sla_count"]}) if row["total"] is not None],
-        service=groups["service"][:10],resolution=resolution,aging=aging(facts),owner=groups["owner"],flow=flow,priority=groups["priority"],matrix=cells,
+        service=groups["service"][:10],family=groups["family"][:10],program=groups["program"][:12],project=groups["project"][:12],
+        resolution=resolution,aging=aging(facts),owner=groups["owner"],flow=flow,priority=groups["priority"],matrix=cells,
         credit=[{"name":f'{r["program"]} · {r["department"]} · {r["priority"]}',"total":r["utilization"],
                  "quantity":r["quantity"],"reserved":r["reserved"],"consumed":r["consumed"],"released":r["released"],"remaining":r["remaining"]} for r in credits[:10]])
     chart["credit"]=[row for row in chart["credit"] if row["total"] is not None]
@@ -94,7 +95,14 @@ def context_for(request,forced=None):
     return dict(scope=scope,window=window,filters=filters,facts=facts,kpis=current,previous=previous,comparisons=comparisons,
         groups=groups,matrix_rows=cells,approvals=approvals,credits=credits,chart_data=chart,aging_rows=chart["aging"],flow_rows=flow,trend_rows=timeline,
         period_options=(("today","امروز"),("7d","۷ روز اخیر"),("30d","۳۰ روز اخیر"),("month","ماه جاری"),("quarter","فصل جاری"),("6m","۶ ماه اخیر"),("ytd","ابتدای سال تا امروز"),("year","سال جاری"),("custom","بازه دلخواه")),
-        chart_titles=(("trend","روند درخواست و تکمیل"),("sla","سلامت SLA"),("department","بار کاری اداره‌ها"),("owner","بار مدیران درخواست"),("service","تقاضای خدمات"),("aging","سن درخواست‌های باز"),("matrix","طرح × اداره"),("priority","توزیع اولویت"),("credit","بهره‌برداری اعتبار"),("approval","وضعیت تأییدها"),("status","توزیع وضعیت فعلی"),("resolution","توزیع زمان حل")),
+        chart_titles=(
+            ("trend","روند درخواست و تکمیل"),("flow","گردش وضعیت درخواست"),("sla","سلامت SLA"),
+            ("department","بار کاری اداره‌ها"),("program","تقاضا بر اساس طرح"),("project","تقاضا بر اساس پروژه"),
+            ("owner","بار مدیران درخواست"),("service","تقاضای خدمات"),("family","خانواده‌های خدمت"),
+            ("aging","سن درخواست‌های باز"),("matrix","طرح × اداره"),("priority","توزیع اولویت"),
+            ("status","توزیع وضعیت فعلی"),("resolution","توزیع زمان حل"),
+            ("approval","وضعیت تأییدها"),("credit","بهره‌برداری اعتبار"),
+        ),
         report_sections=(("summary","خلاصه"),("demand","تقاضا"),("sla","SLA"),("department","اداره"),("program","طرح"),("service","خدمت"),("credit","اعتبار"),("approval","تأیید"),("appendix","پیوست درخواست‌ها")),
         filter_query=urlencode(params),selected=params,request_urls={key:report_url(params,{"metric":key}) for key in ("total","new","open","completed","pending","overdue","at_risk")},**options_for(scope))
 

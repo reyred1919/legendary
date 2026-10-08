@@ -1,4 +1,11 @@
 {% for field in form %}
+{% if field.field.widget.input_type == 'checkbox' %}
+<div class="field field-check">
+  <label class="check" for="{{ field.id_for_label }}">{{ field }} <span>{{ field.label }}</span></label>
+  {% if field.help_text %}<small class="helptext">{{ field.help_text|safe }}</small>{% endif %}
+  {{ field.errors }}
+</div>
+{% else %}
 <div class="field{% if field.field.widget.input_type == 'textarea' %} field-wide{% endif %}{% if field.field.widget.input_type == 'file' %} field-file{% endif %}">
   <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}</label>
   {% if field.field.widget.input_type == 'file' %}
@@ -7,4 +14,5 @@
   {% if field.help_text %}<small class="helptext">{{ field.help_text|safe }}</small>{% endif %}
   {{ field.errors }}
 </div>
+{% endif %}
 {% endfor %}
